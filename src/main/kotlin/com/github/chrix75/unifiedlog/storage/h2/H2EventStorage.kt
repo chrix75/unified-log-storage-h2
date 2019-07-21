@@ -2,26 +2,31 @@ package com.github.chrix75.unifiedlog.storage.h2
 
 import csperandio.unifiedlog.events.Event
 import csperandio.unifiedlog.storage.EventStorage
+import java.sql.Connection
 import java.sql.Date
 import javax.sql.DataSource
 
-class H2EventStorage(private val ds: DataSource, typeBuilder: EventTypeBuilder, pageSize:Int = 10) : EventStorage {
+class H2EventStorage(private val ds: DataSource, typeBuilder: EventTypeBuilder, pageSize: Int = 10) : EventStorage {
 
     private val page = StoragePage(pageSize, ds, typeBuilder)
 
     override fun save(e: Event) {
         ds.connection.use { c ->
-            val st = c.prepareStatement(
-                "INSERT INTO LOG_EVENT (EVENT_ID, EVENT_TYPE, EVENT_DATA, EVENT_TIMESTAMP) " +
-                        "VALUES(?, ?, ?, ?)"
-            )
-            st.setString(1, e.id.toString())
-            st.setString(2, e.type.name)
-            st.setString(3, String(e.data))
-            st.setDate(4, Date(e.timestamp.time))
-
-            st.use { it.execute() }
+            saveEvent(c, e)
         }
+    }
+
+    private fun saveEvent(c: Connection, e: Event) {
+        val st = c.prepareStatement(
+            "INSERT INTO LOG_EVENT (EVENT_ID, EVENT_TYPE, EVENT_DATA, EVENT_TIMESTAMP) " +
+                    "VALUES(?, ?, ?, ?)"
+        )
+        st.setString(1, e.id.toString())
+        st.setString(2, e.type.name)
+        st.setString(3, String(e.data))
+        st.setDate(4, Date(e.timestamp.time))
+
+        st.use { it.execute() }
     }
 
     override operator fun get(i: Int): Event = page[i]
