@@ -3,7 +3,7 @@ package com.github.chrix75.unifiedlog.storage.h2
 import csperandio.unifiedlog.events.Event
 import csperandio.unifiedlog.storage.EventStorage
 import java.sql.Connection
-import java.sql.Date
+import java.sql.Timestamp
 import javax.sql.DataSource
 
 class H2EventStorage(private val ds: DataSource, typeBuilder: EventTypeBuilder, pageSize: Int = 10) : EventStorage {
@@ -24,7 +24,7 @@ class H2EventStorage(private val ds: DataSource, typeBuilder: EventTypeBuilder, 
         st.setString(1, e.id.toString())
         st.setString(2, e.type.name)
         st.setString(3, String(e.data))
-        st.setDate(4, Date(e.timestamp.time))
+        st.setTimestamp(4, Timestamp(e.timestamp.time))
 
         st.use { it.execute() }
     }
