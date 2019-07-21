@@ -75,6 +75,15 @@ class H2EventStorageTest {
     }
 
     @Test
+    fun read_back() {
+        createEvents(7)
+        val e7 = storage[6]
+        assertEquals("EVENT 7", String(e7.data))
+        val e1 = storage[0]
+        assertEquals("EVENT 1", String(e1.data))
+    }
+
+    @Test
     fun search_unknown_event_and_after_add_it() {
         createEvents(7)
         try {
