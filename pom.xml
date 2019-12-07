@@ -5,7 +5,7 @@
 
     <groupId>com.github.chrix75</groupId>
     <artifactId>unified-log-storage-h2</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <name>com.github.chrix75 unified-log-storage-h2</name>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.github.chrix75</groupId>
             <artifactId>unified-log</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
